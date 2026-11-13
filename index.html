@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEVALDI FINANCE v9.3</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d30;--panel2:#192740;--line:#2b3a55;--text:#edf3ff;--muted:#9aabc5;--green:#39d6a0;--blue:#79aaff;--red:#ff7485;--yellow:#ffd071}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#172947 0,#0b1220 45%);color:var(--text);font:14px system-ui,Segoe UI,sans-serif}
+main{max-width:1240px;margin:auto;padding:24px 18px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+h1{margin:0;font-size:26px;letter-spacing:-.7px}h1 span{color:var(--green)}.sub,.muted{color:var(--muted)}.sub{font-size:13px;margin-top:4px}
+button,.btn{border:0;border-radius:10px;padding:10px 13px;background:var(--green);color:#06251b;font-weight:750;cursor:pointer;font:inherit}
+button.secondary,.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}button.danger{background:#512b39;color:#ffdce2}button.small{padding:6px 9px;font-size:12px}
+.toolbar,.tabs,.actions{display:flex;gap:8px;flex-wrap:wrap}.tabs{padding:8px;background:#0d1728;border:1px solid var(--line);border-radius:14px;margin:18px 0}
+.tabs button{background:transparent;color:var(--muted)}.tabs button.active{background:var(--panel2);color:var(--green);border:1px solid #315a55}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:linear-gradient(160deg,#142139,#111b2d);border:1px solid var(--line);border-radius:16px;padding:17px;min-width:0;box-shadow:0 12px 35px #0002}
+.kicker{font-size:12px;color:var(--muted)}.value{font-size:25px;font-weight:800;margin-top:7px;letter-spacing:-.5px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}
+h2{font-size:17px;margin:0 0 14px}.section{margin-top:13px}.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.bar{height:8px;border-radius:20px;background:#263650;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--green);border-radius:20px}
+label{display:block;color:var(--muted);font-size:12px;margin:0 0 5px}input,select,textarea{width:100%;padding:10px 11px;border-radius:9px;border:1px solid var(--line);background:#0b1628;color:var(--text);font:inherit;min-width:0}input:focus,select:focus,textarea:focus{outline:2px solid #427d78}
+form,.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.full{grid-column:1/-1}.field{min-width:0}.hint{font-size:12px;color:var(--muted);line-height:1.5}.pill{display:inline-block;padding:4px 8px;border-radius:30px;background:#203451;color:#d4e3ff;font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}th{color:var(--muted);font-weight:600}td:last-child{text-align:right;white-space:nowrap}.tablewrap{overflow-x:auto}
+.item{padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.item small{color:var(--muted)}
+.notice{padding:12px 14px;border-radius:12px;background:#163a35;border:1px solid #286d5a;color:#bdf8e5;margin:10px 0}.notice.warn{background:#46381e;border-color:#80612b;color:#ffe6ad}.notice.err{background:#482630;border-color:#7b3b4b;color:#ffd5dc}
+.hidden{display:none!important}.status{font-size:12px;color:var(--muted)}.status.ok{color:var(--green)}.status.bad{color:var(--red)}
+#toast{position:fixed;right:18px;bottom:18px;background:#203451;border:1px solid #456080;border-radius:12px;padding:12px 16px;display:none;max-width:min(420px,90vw);box-shadow:0 12px 35px #0008;z-index:20}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}}
+@media(max-width:520px){main{padding:17px 11px 45px}.grid{gap:8px}.card{padding:13px}.value{font-size:20px}.tabs{overflow:auto;flex-wrap:nowrap}.tabs button{white-space:nowrap}.formgrid,form{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:22px}}
+@media print{body{background:#fff;color:#111}.tabs,.toolbar,button,.actions{display:none!important}.card{background:#fff;color:#111;box-shadow:none;break-inside:avoid}}
+
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:14px}.cal-cell{min-height:82px;padding:8px;border:1px solid var(--line);border-radius:9px;background:#0d192b;overflow:hidden}.cal-cell.muted{opacity:.4}.cal-cell.today{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}.cal-cell b{display:block;margin-bottom:5px}.cal-event{font-size:10px;line-height:1.3;color:var(--blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cal-head{font-size:11px;color:var(--muted);text-align:center;padding:6px}.mini-bar{height:9px;border-radius:10px;background:var(--panel2);overflow:hidden;margin:6px 0}.mini-bar i{display:block;height:100%;background:var(--green)}.metric{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}.metric .kicker{font-size:11px;color:var(--muted)}.metric .value{font-size:20px;font-weight:800;margin-top:5px}.report-head{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+@media(max-width:650px){.calendar-grid{gap:3px}.cal-cell{min-height:65px;padding:5px}.cal-event{font-size:9px}.tabs{overflow-x:auto}}
+@media print{body{background:#fff!important;color:#111!important}.tabs,.toolbar,.top,.section:not(#tab-reports .section),#globalNotice,.card:not(#tab-reports .card),#toast{display:none!important}main{max-width:none;padding:0}#tab-reports{display:block!important}#tab-reports .card{background:#fff!important;color:#111!important;border:0!important;box-shadow:none!important}#tab-reports .hint{color:#444!important}#tab-reports table{color:#111!important}#tab-reports th,#tab-reports td{border-color:#ccc!important}}
+
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+ <div><h1>SEVALDI <span>FINANCE</span> <span class="pill">v9.2 FINANCE PRO</span></h1><div class="sub">Personal finance management · Cash & savings linked · Rupiah (IDR) · Google login · Cloud-ready</div></div>
+ <div class="toolbar">
+  <button class="secondary" id="exportBtn">Ekspor backup</button>
+  <label class="btn secondary" style="margin:0;cursor:pointer">Impor backup<input id="importFile" type="file" accept="application/json" hidden></label>
+  <button class="secondary" onclick="showTab('reports');setTimeout(()=>window.print(),120)">Cetak PDF</button>
+ </div>
+</header>
+<div class="card section" style="border-color:#39766b">
+ <div class="row"><div><h2 style="margin-bottom:5px">Mode kelola keuangan</h2><div class="hint">Data saling terhubung: transaksi memengaruhi kas, setoran/penarikan memindahkan saldo kas ke/dari tabungan, dan target utama dikendalikan dari Pengaturan.</div></div><span class="pill">EDIT AKTIF</span></div>
+ <div class="hint" style="margin-top:9px;line-height:1.8">
+  <b>Transaksi:</b> buka Transaksi → pilih tombol Edit pada baris transaksi.<br>
+  <b>Anggaran:</b> buka Anggaran → Edit pada kategori yang ingin diubah.<br>
+  <b>Tagihan:</b> buka Tagihan → Edit pada tagihan yang ingin diubah.<br>
+  <b>Tabungan:</b> buka Tabungan → tambah target, catat setoran, lalu edit/hapus target atau setoran.<br>
+  <b>Gaji dan pengaturan:</b> buka Pengaturan & Cloud → ubah angka → Simpan pengaturan.
+ </div>
+</div>
+<div id="globalNotice"></div>
+<div class="grid" id="summary"></div>
+<nav class="tabs">
+ <button class="active" data-tab="overview">Ringkasan</button><button data-tab="transactions">Transaksi</button><button data-tab="budgets">Anggaran</button><button data-tab="allocation">Anggaran Pintar</button><button data-tab="bills">Tagihan</button><button data-tab="savings">Tabungan</button><button data-tab="analytics">Analisis</button><button data-tab="calendar">Kalender</button><button data-tab="reports">Laporan</button><button data-tab="settings">Pengaturan & Cloud</button>
+</nav>
+
+<section id="tab-overview">
+ <div class="card">
+  <h2>Arus kas bulan ini</h2>
+  <div id="cashflow"></div>
+ </div>
+ <div class="two section">
+  <div class="card"><h2>Anggaran vs realisasi</h2><div id="budgetOverview"></div></div>
+  <div class="card"><h2>Peringatan anggaran</h2><div id="budgetAlerts"></div></div>
+ </div>
+ <div class="two section">
+  <div class="card"><h2>Agenda tagihan terdekat</h2><div id="upcomingBills"></div></div>
+  <div class="card"><h2>Pengingat keuangan</h2><div id="financeReminders"></div></div>
+ </div>
+ <div class="card section"><h2>Evaluasi keuangan bulan ini</h2><div id="monthlyEvaluation"></div></div>
+ <div class="card section"><div class="row"><h2>Transaksi terbaru</h2><button class="secondary small" onclick="showTab('transactions')">Kelola transaksi</button></div><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Catatan</th><th>Jenis</th><th>Nominal</th></tr></thead><tbody id="recentTx"></tbody></table></div></div>
+</section>
+
+<section id="tab-transactions" class="hidden">
+ <div class="two">
+  <div class="card"><h2 id="txFormTitle">Tambah transaksi</h2>
+   <form id="txForm">
+    <div class="field"><label>Tanggal</label><input type="date" id="txDate" required></div>
+    <div class="field"><label>Jenis</label><select id="txType"><option>Pengeluaran</option><option>Pemasukan</option></select></div>
+    <div class="field"><label>Kategori</label><select id="txCategory"></select></div>
+    <div class="field"><label>Nominal (Rp)</label><input type="number" id="txAmount" min="1" required></div>
+    <div class="field full"><label>Catatan</label><input id="txNote" maxlength="120" placeholder="Contoh: belanja mingguan"></div>
+    <div class="field full actions"><button type="submit" id="txSave">Simpan transaksi</button><button type="button" class="secondary hidden" id="txCancel">Batal edit</button></div>
+   </form>
+  </div>
+  <div class="card"><h2>Filter transaksi</h2><div class="formgrid">
+   <div><label>Bulan</label><input type="month" id="txMonth"></div><div><label>Cari catatan/kategori</label><input id="txSearch" placeholder="Cari..."></div>
+  </div><p class="hint">Pilih Edit pada riwayat untuk mengubah transaksi. Penghapusan meminta konfirmasi.</p></div>
+ </div>
+ <div class="card section"><h2>Riwayat transaksi</h2><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Kategori / Catatan</th><th>Jenis</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="txRows"></tbody></table></div></div>
+</section>
+
+<section id="tab-budgets" class="hidden">
+ <div class="two">
+  <div class="card"><h2 id="budgetFormTitle">Tambah kategori anggaran</h2><form id="budgetForm">
+   <div><label>Nama kategori</label><input id="budgetName" required placeholder="Misalnya: Makan"></div><div><label>Batas bulanan (Rp)</label><input id="budgetAmount" type="number" min="0" required></div>
+   <div class="full actions"><button type="button" id="budgetSave" onclick="saveBudget()">Simpan kategori</button><button type="button" class="secondary hidden" id="budgetCancel">Batal edit</button></div>
+  </form></div>
+  <div class="card"><h2>Tips pengelolaan</h2><p class="hint">Anggaran adalah batas rencana. Catat transaksi agar realisasi terhitung. Tagihan rutin dapat dicatat sebagai transaksi pengeluaran saat dibayar.</p></div>
+ </div>
+ <div class="card section"><h2>Semua anggaran <span class="pill">Tombol Edit / Hapus</span></h2><div id="budgetRows"></div></div>
+</section>
+
+<section id="tab-allocation" class="hidden">
+ <div class="card"><div class="row"><div><h2>Anggaran Pintar</h2><p class="hint">Bandingkan gaji, target setoran bulanan setiap tujuan, dan anggaran tetap. Rekomendasi hanya simulasi; anggaran tidak berubah sebelum kamu menekan Simpan alokasi.</p></div><button id="smartRecommend" type="button">Simulasikan rekomendasi</button></div>
+  <div class="grid section" id="allocationSummary"></div>
+  <div class="tablewrap section"><table><thead><tr><th>Kategori</th><th>Anggaran bulanan</th><th>% dari gaji</th><th></th></tr></thead><tbody id="allocationRows"></tbody></table></div>
+  <div class="row section"><div><b id="allocationTotal">Total anggaran: Rp0</b><div class="hint" id="allocationHint"></div></div><button id="saveAllocation" type="button">Simpan alokasi</button></div>
+ </div>
+</section>
+
+<section id="tab-bills" class="hidden">
+ <div class="two">
+  <div class="card"><h2 id="billFormTitle">Tambah tagihan</h2><form id="billForm">
+   <div><label>Nama tagihan</label><input id="billName" required></div><div><label>Nominal (Rp)</label><input id="billAmount" type="number" min="0" required></div>
+   <div><label>Pola pengulangan</label><select id="billRepeat"><option value="monthly">Bulanan</option><option value="interval">Setiap beberapa hari</option></select></div>
+   <div id="billDayWrap"><label>Tanggal jatuh tempo</label><input id="billDay" type="number" min="1" max="31" value="13"></div>
+   <div id="billStartWrap" class="hidden"><label>Mulai jatuh tempo</label><input id="billStart" type="date"></div>
+   <div id="billIntervalWrap" class="hidden"><label>Ulangi setiap (hari)</label><input id="billInterval" type="number" min="1" value="28"></div>
+   <div class="full actions"><button type="submit" id="billSave">Simpan tagihan</button><button type="button" class="secondary hidden" id="billCancel">Batal edit</button></div>
+  </form></div>
+  <div class="card"><h2>Pengingat</h2><p class="hint">Tagihan bawaan: ChatGPT Go Rp75.000 setiap tanggal 13 dan kuota internet Rp150.000 setiap 28 hari mulai 25 November 2026. Kamu dapat mengedit nominal atau jadwalnya.</p><div class="notice warn">Notifikasi browser hanya muncul saat aplikasi dibuka atau aktif. Pengingat cloud terjadwal saat aplikasi tertutup memerlukan layanan push/server tambahan.</div></div>
+ </div>
+ <div class="card section"><h2>Daftar tagihan <span class="pill">Tombol Edit / Hapus</span></h2><div id="billRows"></div></div>
+</section>
+
+<section id="tab-savings" class="hidden">
+ <div class="two">
+  <div class="card"><h2 id="goalFormTitle">Tambah target tabungan</h2><form id="goalForm">
+   <div><label>Nama target</label><input id="goalName" required></div><div><label>Target (Rp)</label><input id="goalTarget" type="number" min="1" required></div>
+   <div><label>Saldo terkumpul (Rp)</label><input id="goalSaved" type="number" min="0" value="0" required></div>
+   <div><label>Target setoran per bulan (Rp) · atur manual</label><input id="goalMonthly" type="number" min="0" value="0"></div><div><label>Target tanggal tercapai</label><input id="goalDate" type="date"></div>
+   <div class="full actions"><button type="submit" id="goalSave">Simpan target</button><button type="button" class="secondary hidden" id="goalCancel">Batal edit</button></div>
+  </form></div>
+  <div class="card"><h2>Rencana alokasi tabungan</h2><div id="savingPlan"></div><p class="hint">Setoran ini adalah rencana manual, bukan pemindahan uang otomatis ke rekening.</p></div>
+ </div>
+ <div class="card section"><h2>Target dan progres tabungan <span class="pill">Tombol Edit / Hapus</span></h2><div id="goalRows"></div></div>
+ <div class="card section"><h2>Progress target tabungan bulan ini</h2><p class="hint">Target bulanan ditentukan sendiri pada masing-masing tujuan. Progres dihitung dari setoran dikurangi penarikan pada bulan berjalan.</p><div id="monthlyGoalProgress"></div></div>
+
+  <div class="card section" style="border-color:#39766b">
+   <h2>Setor ke target tabungan</h2>
+   <p class="hint">Catat setiap setoran. Saldo dan progres target akan bertambah otomatis.</p>
+   <form id="depositForm">
+    <div><label>Target tabungan</label><select id="depositGoal" required></select></div>
+    <div><label>Tanggal setoran</label><input id="depositDate" type="date" required></div>
+    <div><label>Nominal setoran (Rp)</label><input id="depositAmount" type="number" min="1" required></div>
+    <div><label>Catatan (opsional)</label><input id="depositNote" maxlength="120" placeholder="Contoh: setoran dari gaji"></div>
+    <div class="full actions"><button type="submit" id="depositSave">Simpan setoran</button><button type="button" class="secondary hidden" id="depositCancel">Batal edit</button></div>
+   </form>
+  </div>
+  <div class="card section"><h2>Riwayat setoran tabungan</h2><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Target</th><th>Catatan</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="depositRows"></tbody></table></div></div>
+  <div class="card section" style="border-color:#b7794b">
+   <h2>Tarik dari target tabungan</h2>
+   <p class="hint">Penarikan mengurangi saldo target yang dipilih. Nominal tidak boleh melebihi saldo tersedia.</p>
+   <form id="withdrawForm">
+    <div><label>Target tabungan</label><select id="withdrawGoal" required></select></div>
+    <div><label>Tanggal penarikan</label><input id="withdrawDate" type="date" required></div>
+    <div><label>Nominal penarikan (Rp)</label><input id="withdrawAmount" type="number" min="1" required></div>
+    <div><label>Catatan (opsional)</label><input id="withdrawNote" maxlength="120" placeholder="Contoh: kebutuhan mendesak"></div>
+    <div class="full actions"><button type="submit" class="danger" id="withdrawSave">Simpan penarikan</button><button type="button" class="secondary hidden" id="withdrawCancel">Batal edit</button></div>
+   </form>
+  </div>
+  <div class="card section"><h2>Riwayat penarikan tabungan</h2><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Target</th><th>Catatan</th><th>Nominal</th><th>Aksi</th></tr></thead><tbody id="withdrawRows"></tbody></table></div></div>
+  <div class="card section" style="border-color:#39766b">
+   <h2>Alokasi setoran manual</h2>
+   <p class="hint">Masukkan jumlah dana yang ingin dialokasikan. Tentukan sendiri nominal untuk setiap tujuan. Setoran baru dicatat setelah konfirmasi.</p>
+   <div><label>Total dana yang akan dialokasikan (Rp)</label><input id="allocationPool" type="number" min="0" value="0"></div>
+   <div id="manualAllocationRows" class="section"></div>
+   <div class="row section"><b id="manualAllocationTotal">Total alokasi: Rp0</b><b id="manualAllocationRemaining">Belum dialokasikan: Rp0</b></div>
+   <button type="button" id="confirmManualAllocation">Konfirmasi & catat setoran</button>
+  </div>
+</section>
+
+
+<section id="tab-analytics" class="hidden">
+ <div class="two"><div class="card"><h2>Analisis pengeluaran bulan ini</h2><div id="expenseAnalysis"></div></div><div class="card"><h2>Ringkasan kesehatan anggaran</h2><div id="budgetHealth"></div></div></div>
+ <div class="card section"><h2>Tren arus kas 6 bulan terakhir</h2><div id="monthlyTrend"></div></div>
+</section>
+<section id="tab-calendar" class="hidden">
+ <div class="card"><div class="row"><button class="secondary" id="calPrev">‹ Sebelumnya</button><h2 id="calendarTitle">Kalender keuangan</h2><button class="secondary" id="calNext">Berikutnya ›</button></div>
+  <div class="calendar-grid" id="calendarGrid"></div><div class="section"><h3>Agenda bulan ini</h3><div id="calendarAgenda"></div></div>
+  <p class="hint">Agenda memuat jatuh tempo tagihan, tanggal gajian, pengingat menabung, dan transaksi yang sudah dicatat.</p>
+ </div>
+</section>
+<section id="tab-reports" class="hidden">
+ <div class="card"><div class="row"><div><h2>Laporan keuangan</h2><p class="hint">Pilih periode untuk membuat ringkasan, PDF, atau file Excel.</p></div><div class="actions"><button id="excelExport" type="button">Unduh Excel</button><button class="secondary" id="pdfExport" type="button">Cetak / Simpan PDF</button></div></div>
+  <div class="formgrid section"><div><label>Periode laporan</label><input type="month" id="reportMonth"></div></div>
+  <div id="reportContent" class="section"></div>
+ </div>
+</section>
+
+<section id="tab-settings" class="hidden">
+ <div class="two">
+  <div class="card"><h2>Pengaturan utama</h2><p class="hint">Perubahan target sewa dan dana darurat akan langsung memperbarui target tabungan terkait. Setoran bulanan setiap tujuan diatur manual pada halaman Tabungan.</p><form id="settingsForm">
+   <div><label>Gaji bulanan (Rp)</label><input type="number" id="setIncome" min="0" required></div>
+   <div><label>Tanggal gajian</label><input type="number" id="setPayDay" min="1" max="28" required></div>
+   
+   <div><label>Tanggal pengingat menabung</label><input type="number" id="setSavingDay" min="1" max="28" required></div>
+   <div><label>Target dana sewa tahunan (Rp) · terhubung ke Tabungan</label><input type="number" id="setRent" min="0" required></div>
+   <div><label>Target dana darurat (Rp) · terhubung ke Tabungan</label><input type="number" id="setEmergency" min="0" required></div>
+   <div class="full card section"><h3>Target setoran bulanan per tujuan</h3><p class="hint">Atur nominal setoran bulanan di sini. Perubahan langsung digunakan oleh Tabungan, Anggaran Pintar, progres bulanan, dan pengingat.</p><div id="monthlyGoalSettings" class="formgrid"></div></div>
+   <div><label>Saldo estimasi / saldo kas yang dimiliki saat ini (Rp)</label><input type="number" id="setOpening" min="0" step="1" required><p class="hint">Isi sesuai saldo kas aktual yang kamu miliki sekarang. Saat disimpan, sistem menyesuaikan saldo dasar agar angka Saldo estimasi di Ringkasan sama dengan nominal ini, tanpa menghapus riwayat transaksi, setoran, atau penarikan.</p></div>
+   <div><label>Batas pengeluaran harian (Rp)</label><input type="number" id="setDaily" min="0" required></div>
+   <div class="full actions"><button type="submit">Simpan pengaturan</button></div>
+  </form></div>
+  <div class="card"><h2>Google login & cloud sync</h2>
+   <p class="hint">Hubungkan project Supabase milikmu sekali. Setelah Google OAuth dan database disiapkan, kamu dapat login dengan Google yang sama dari HP maupun laptop.</p>
+   <form id="cloudConfigForm" onsubmit="return false">
+    <div class="full"><label>Supabase Project URL</label><input id="cloudUrl" placeholder="https://xxxx.supabase.co" autocomplete="url"></div>
+    <div class="full"><label>Supabase anon / publishable key</label><input id="cloudKey" placeholder="sb_publishable_... atau anon key" autocomplete="off"></div>
+    <div class="full actions"><button type="button" id="cloudSave" class="secondary">Simpan konfigurasi</button><button type="button" id="cloudLogin">Lanjutkan dengan Google</button><button type="button" id="cloudSyncNow" class="secondary">Sinkronkan sekarang</button><button type="button" id="cloudLogout" class="danger">Logout</button></div>
+   </form>
+   <div class="status" id="cloudStatus">Cloud belum dikonfigurasi.</div>
+   <div class="notice warn">Penting: jangan masukkan service_role key. Gunakan hanya anon/public atau publishable key. Jangan bagikan file konfigurasi atau token login.</div>
+  </div>
+ </div>
+ <div class="card section"><h2>Setup cloud satu kali</h2>
+  <ol class="hint" style="line-height:1.8;padding-left:20px">
+   <li>Buat project di Supabase dan salin Project URL serta anon/publishable key ke kolom di atas.</li>
+   <li>Di Supabase → Authentication → Providers, aktifkan Google.</li>
+   <li>Di Google Cloud Console, buat OAuth Client ID tipe Web. Tambahkan URL callback Supabase yang ditampilkan pada pengaturan provider Google Supabase sebagai Authorized redirect URI.</li>
+   <li>Masukkan Client ID dan Client Secret Google ke provider Google di Supabase.</li>
+   <li>Di Supabase → Authentication → URL Configuration, masukkan alamat website yang akan dipublikasikan sebagai Site URL dan Redirect URL yang diizinkan. Untuk pengujian lokal, gunakan alamat origin lokal yang sesuai.</li>
+   <li>Jalankan SQL berikut satu kali di Supabase → SQL Editor.</li>
+  </ol>
+  <pre id="sqlSetup" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#091323;border:1px solid var(--line);padding:13px;border-radius:10px;color:#c8dcff;font-size:12px">create table if not exists public.user_finance (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table public.user_finance enable row level security;
+
+drop policy if exists "Users can read own finance" on public.user_finance;
+drop policy if exists "Users can insert own finance" on public.user_finance;
+drop policy if exists "Users can update own finance" on public.user_finance;
+
+create policy "Users can read own finance"
+on public.user_finance for select to authenticated
+using (auth.uid() = user_id);
+create policy "Users can insert own finance"
+on public.user_finance for insert to authenticated
+with check (auth.uid() = user_id);
+create policy "Users can update own finance"
+on public.user_finance for update to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);</pre>
+  <p class="hint">Setelah setup, klik “Simpan konfigurasi” lalu “Lanjutkan dengan Google”. Di perangkat lain, buka alamat website yang sama, masukkan URL dan public key, lalu login dengan akun Google yang sama.</p>
+  <p class="hint">Penyimpanan lokal tetap menjadi cache/backup browser. Data lintas perangkat baru aktif setelah project cloud dan Google OAuth berhasil dikonfigurasi.</p>
+ </div>
+</section>
+<footer class="hint section">SEVALDI FINANCE v9.2 · Data lokal tersimpan di browser perangkat ini. Backup berkala dianjurkan. Sinkronisasi cloud belum aktif sampai kamu menyiapkan project Supabase, tabel, URL, anon key, dan login.</footer>
+</main><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const KEY='sevaldi_finance_v3', CLOUD='sevaldi_finance_cloud';
+const money=n=>'Rp'+Math.round(Number(n)||0).toLocaleString('id-ID');
+const today=()=>{let d=new Date(),z=d.getTimezoneOffset()*60000;return new Date(d-z).toISOString().slice(0,10)};
+const month=()=>today().slice(0,7);
+const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
+const defaultData={
+ settings:{income:4000000,payDay:1,savingTotal:2000000,savingDay:2,rentTarget:8000000,emergencyTarget:9600000,openingBalance:2048000,openingDate:'2026-11-13',dailyLimit:65000},
+ budgets:{'Makan':750000,'Bensin':300000,'Listrik':150000,'Air':50000,'Gas':40000,'Kebutuhan rumah tangga':150000,'Kuota internet':162500,'Langganan digital':75000,'Kesehatan':100000,'Hiburan dan sosial':100000,'Dana cadangan':122500},
+ bills:[{id:'bill-chatgpt',name:'ChatGPT Go',amount:75000,repeat:'monthly',day:13},{id:'bill-kuota',name:'Kuota internet',amount:150000,repeat:'interval',startDate:'2026-11-25',intervalDays:28}],
+ goals:[{id:'rent',name:'Dana sewa rumah tahunan',target:8000000,saved:0},{id:'emergency',name:'Dana darurat',target:9600000,saved:0},{id:'future',name:'Tabungan masa depan',target:6400000,saved:0}],deposits:[],
+ withdrawals:[],
+ transactions:[]
+};
+let data=loadData(),editing={tx:null,budget:null,bill:null,goal:null},cloud={url:'',key:'',access_token:'',refresh_token:'',user:null};
+function loadData(){
+ try{
+  let x=JSON.parse(localStorage.getItem(KEY));
+  if(x&&x.settings&&x.budgets&&x.bills&&x.goals&&x.transactions){if(!Array.isArray(x.deposits))x.deposits=[];if(!Array.isArray(x.withdrawals))x.withdrawals=[];return x;}
+  // One-time compatibility import from earlier SEVALDI FINANCE versions.
+  let old=JSON.parse(localStorage.getItem('sevaldi_finance_v1'));
+  if(old&&Array.isArray(old.transactions)){
+   let bills=(old.bills||[]).map((b,i)=>({id:'legacy-bill-'+i,name:b.name||'Tagihan',amount:Number(b.amount)||0,repeat:b.intervalDays?'interval':'monthly',day:b.day,startDate:b.startDate,intervalDays:b.intervalDays}));
+   let goals=(old.savingsGoals||[]).map((g,i)=>({id:g.id||'legacy-goal-'+i,name:g.name||'Target tabungan',target:Number(g.target)||0,saved:Number(g.saved)||0}));
+   if(!goals.some(g=>g.name.toLowerCase().includes('sewa')))goals.unshift({id:'rent',name:'Dana sewa rumah tahunan',target:8000000,saved:0});
+   return {
+    settings:{income:Number(old.income)||4000000,payDay:Number(old.schedule?.payDay)||1,savingTotal:Number(old.schedule?.savingAmount)||2000000,savingDay:Number(old.schedule?.savingDay)||2,rentTarget:8000000,emergencyTarget:Number(old.fundGoal)||9600000,openingBalance:Number(old.openingBalance)||0,openingDate:old.openingDate||'2026-11-13',dailyLimit:Number(old.dailyLimit)||65000},
+    budgets:old.budgets||structuredClone(defaultData.budgets),bills,goals,deposits:[],transactions:old.transactions
+   };
+  }
+ }catch(e){}
+ return structuredClone(defaultData)
+}
+function persist(){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(data));
+  render();
+  scheduleCloudSave();
+  return true;
+ }catch(err){
+  console.error('Gagal menyimpan data SEVALDI FINANCE:',err);
+  alert('Data belum tersimpan di browser. Periksa ruang penyimpanan atau izin browser, lalu coba lagi.');
+  return false;
+ }
+}
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',2600)}
+function showTab(t){document.querySelectorAll('section[id^="tab-"]').forEach(x=>x.classList.toggle('hidden',x.id!=='tab-'+t));document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===t));if(t==='allocation'){allocationDraft=null;renderAllocation();}if(t==='analytics')renderAnalytics();if(t==='calendar')renderCalendar();if(t==='reports')renderReport()}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function txMonth(){return data.transactions.filter(t=>(t.date||'').startsWith(month()))}
+function sumType(list,type){return list.filter(x=>x.type===type).reduce((a,x)=>a+Number(x.amount||0),0)}
+function totalDeposits(){return (data.deposits||[]).reduce((a,x)=>a+(+x.amount||0),0)}
+function totalWithdrawals(){return (data.withdrawals||[]).reduce((a,x)=>a+(+x.amount||0),0)}
+// Setoran mengurangi kas; penarikan mengembalikan kas. Ini perpindahan internal.
+function cashBalance(){return (+data.settings.openingBalance||0)+sumType(data.transactions,'Pemasukan')-sumType(data.transactions,'Pengeluaran')-totalDeposits()+totalWithdrawals()}
+function savingsBalance(){return (data.goals||[]).reduce((a,g)=>a+(+g.saved||0),0)+totalDeposits()-totalWithdrawals()}
+
+function dueDate(b,ym){
+ if(b.repeat==='interval'&&b.startDate){let [y,m]=ym.split('-').map(Number),start=new Date(b.startDate+'T12:00:00'),first=new Date(y,m-1,1,12),last=new Date(y,m,0,12),step=Math.max(1,+b.intervalDays||1),d=new Date(start);if(d<first){let elapsed=Math.floor((first-d)/86400000);d.setDate(d.getDate()+Math.ceil(elapsed/step)*step)}return d<=last?d.toISOString().slice(0,10):null}
+ let [y,m]=ym.split('-').map(Number),day=Math.min(+b.day||1,new Date(y,m,0).getDate());return `${y}-${String(m).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+function nextDue(b){let start=new Date(today()+'T12:00:00');for(let i=0;i<400;i++){let d=new Date(start);d.setDate(d.getDate()+i);let key=d.toISOString().slice(0,10);if(dueDate(b,key.slice(0,7))===key)return key}return '—'}
+function renderFinanceInsights(mtx,inc,exp){
+ const ym=month();
+ const usedBy={};mtx.filter(t=>t.type==='Pengeluaran').forEach(t=>usedBy[t.category]=(usedBy[t.category]||0)+(+t.amount||0));
+ const alerts=Object.entries(data.budgets).map(([k,limit])=>({name:k,limit:+limit||0,used:usedBy[k]||0})).filter(x=>x.limit>0&&x.used/x.limit>=.8).sort((a,b)=>(b.used/b.limit)-(a.used/a.limit));
+ budgetAlerts.innerHTML=alerts.length?alerts.map(x=>{let p=x.used/x.limit*100;return `<div class="item"><div class="row"><b>${esc(x.name)}</b><b class="${p>=100?'red':'green'}">${p.toFixed(0)}%</b></div><div class="bar"><i style="width:${Math.min(100,p)}%;background:${p>=100?'var(--red)':'var(--yellow)'}"></i></div><small>${p>=100?'Melewati batas anggaran sebesar '+money(x.used-x.limit):'Sisa anggaran '+money(x.limit-x.used)+' · sudah terpakai '+money(x.used)}</small></div>`}).join(''):'<p class="hint">Belum ada anggaran yang mencapai 80%. Pengeluaran masih dalam batas.</p>';
+ const evaluation=inc-exp,saveDeposits=(data.deposits||[]).filter(x=>(x.date||'').startsWith(ym)).reduce((a,x)=>a+(+x.amount||0),0),saveWithdrawals=(data.withdrawals||[]).filter(x=>(x.date||'').startsWith(ym)).reduce((a,x)=>a+(+x.amount||0),0),netSave=saveDeposits-saveWithdrawals,ratio=inc?exp/inc*100:0;
+ monthlyEvaluation.innerHTML=`<div class="grid"><div class="metric"><div class="kicker">Pemasukan tercatat</div><div class="value green">${money(inc)}</div></div><div class="metric"><div class="kicker">Pengeluaran tercatat</div><div class="value red">${money(exp)}</div></div><div class="metric"><div class="kicker">Selisih kas</div><div class="value ${evaluation>=0?'green':'red'}">${money(evaluation)}</div></div><div class="metric"><div class="kicker">Tabungan bersih bulan ini</div><div class="value">${money(netSave)}</div></div></div><p class="hint section">Rasio pengeluaran terhadap pemasukan: ${ratio.toFixed(1)}%. ${evaluation>=0?'Arus kas tercatat masih positif.':'Pengeluaran melebihi pemasukan tercatat.'} ${netSave>=0?'Setoran bersih tabungan bulan ini positif.':'Penarikan tabungan bulan ini lebih besar daripada setoran.'}</p>`;
+ const due=data.bills.map(b=>({b,date:nextDue(b)})).filter(x=>x.date).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4);
+ upcomingBills.innerHTML=due.length?due.map(x=>`<div class="item row"><div><b>${esc(x.b.name)}</b><br><small>${x.date}</small></div><b>${money(x.b.amount)}</b></div>`).join(''):'<p class="hint">Belum ada tagihan terjadwal.</p>';
+ const reminders=[];
+ due.forEach(x=>{let days=Math.ceil((new Date(x.date+'T12:00:00')-new Date(today()+'T12:00:00'))/86400000);reminders.push(`${x.b.name}: ${days===0?'jatuh tempo hari ini':days<0?'perlu diperiksa':'jatuh tempo '+days+' hari lagi'} (${x.date})`)});
+ (data.goals||[]).forEach(g=>{let target=+g.monthlyContribution||0;if(!target)return;let paid=(data.deposits||[]).filter(d=>d.goalId===g.id&&(d.date||'').startsWith(ym)).reduce((a,d)=>a+(+d.amount||0),0),taken=(data.withdrawals||[]).filter(w=>w.goalId===g.id&&(w.date||'').startsWith(ym)).reduce((a,w)=>a+(+w.amount||0),0),remaining=Math.max(0,target-paid+taken);if(remaining>0)reminders.push(`${g.name}: target setoran bulan ini masih kurang ${money(remaining)}`)});
+ financeReminders.innerHTML=reminders.length?reminders.map(x=>`<div class="item">${esc(x)}</div>`).join(''):'<p class="hint">Tidak ada pengingat mendesak. Target tabungan bulanan tercapai atau belum diatur.</p>';
+}
+function render(){
+ const mtx=txMonth(),inc=sumType(mtx,'Pemasukan'),exp=sumType(mtx,'Pengeluaran'),s=data.settings;
+ const currentSavings=savingsBalance();
+ document.getElementById('summary').innerHTML=[
+ ['Gaji bulanan',money(s.income),'green'],
+ ['Pemasukan tercatat',money(inc),'green'],
+ ['Pengeluaran bulan ini',money(exp),'red'],
+ ['Saldo estimasi',money(cashBalance()),''],
+ ['Tabungan sekarang',money(currentSavings),'green']
+ ].map(x=>`<div class="card"><div class="kicker">${x[0]}</div><div class="value ${x[2]}">${x[1]}</div></div>`).join('');
+ document.getElementById('cashflow').innerHTML=`<div class="row"><span class="muted">Pemasukan tercatat</span><b class="green">${money(inc)}</b></div><div class="row" style="margin-top:9px"><span class="muted">Pengeluaran tercatat</span><b class="red">${money(exp)}</b></div><div class="row" style="margin-top:9px"><span class="muted">Setoran bersih ke tabungan</span><b>${money(totalDeposits()-totalWithdrawals())}</b></div><div class="row" style="margin-top:9px"><span class="muted">Saldo kas tersedia</span><b class="${cashBalance()>=0?'green':'red'}">${money(cashBalance())}</b></div><div class="bar"><i style="width:${Math.min(100,s.income?exp/s.income*100:0)}%"></i></div><div class="hint">Rasio pengeluaran terhadap gaji: ${s.income?(exp/s.income*100).toFixed(1):0}% · Setoran dan penarikan tabungan dihitung sebagai perpindahan internal.</div>`;
+
+ let bo=Object.entries(data.budgets).map(([k,v])=>{let used=mtx.filter(t=>t.type==='Pengeluaran'&&t.category===k).reduce((a,t)=>a+Number(t.amount),0),p=v?Math.min(100,used/v*100):0;return `<div class="item"><div class="row"><b>${esc(k)}</b><span>${money(used)} / ${money(v)}</span></div><div class="bar"><i style="width:${p}%;background:${p>=90?'var(--red)':p>=70?'var(--yellow)':'var(--green)'}"></i></div></div>`}).join('');
+ document.getElementById('budgetOverview').innerHTML=bo||'<p class="hint">Belum ada anggaran.</p>';
+ document.getElementById('upcomingBills').innerHTML=data.bills.map(b=>({b,d:nextDue(b)})).sort((a,b)=>a.d.localeCompare(b.d)).slice(0,5).map(x=>`<div class="item row"><div><b>${esc(x.b.name)}</b><br><small>${x.d}</small></div><b>${money(x.b.amount)}</b></div>`).join('')||'<p class="hint">Belum ada tagihan.</p>';
+ document.getElementById('recentTx').innerHTML=data.transactions.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,7).map(t=>`<tr><td>${t.date}</td><td>${esc(t.category)}<br><small>${esc(t.note||'')}</small></td><td>${t.type}</td><td>${money(t.amount)}</td></tr>`).join('')||'<tr><td colspan="4" class="hint">Belum ada transaksi.</td></tr>';
+ renderTransactions();renderBudgets();renderBills();renderGoals();fillSettings();fillCategories();renderFinanceInsights(mtx,inc,exp);renderAnalytics();renderCalendar();renderReport();
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fillCategories(){let sel=document.getElementById('txCategory'),v=sel.value;sel.innerHTML=Object.keys(data.budgets).map(k=>`<option>${esc(k)}</option>`).join('')+'<option>Lain-lain</option><option>Gaji</option><option>Penghasilan sampingan</option>';if([...sel.options].some(o=>o.value===v))sel.value=v;
+}
+function renderTransactions(){let q=document.getElementById('txSearch').value.toLowerCase(),m=document.getElementById('txMonth').value;let rows=data.transactions.filter(t=>(!m||t.date.startsWith(m))&&(`${t.category} ${t.note}`.toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('txRows').innerHTML=rows.map(t=>`<tr><td>${t.date}</td><td><b>${esc(t.category)}</b><br><small>${esc(t.note||'')}</small></td><td>${t.type}</td><td class="${t.type==='Pemasukan'?'green':'red'}">${money(t.amount)}</td><td><button class="secondary small" onclick="editTx('${t.id}')">Edit</button> <button class="danger small" onclick="deleteTx('${t.id}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="5" class="hint">Tidak ada transaksi.</td></tr>'}
+document.getElementById('txSearch').oninput=renderTransactions;document.getElementById('txMonth').onchange=renderTransactions;document.getElementById('txDate').value=today();
+document.getElementById('txForm').onsubmit=e=>{e.preventDefault();let t={id:editing.tx||uid(),date:txDate.value,type:txType.value,category:txCategory.value,amount:+txAmount.value,note:txNote.value.trim()};if(editing.tx){data.transactions[data.transactions.findIndex(x=>x.id===editing.tx)]=t}else data.transactions.push(t);resetTx();persist();toast('Transaksi tersimpan')};
+function editTx(id){let t=data.transactions.find(x=>x.id===id);if(!t)return;editing.tx=id;showTab('transactions');txDate.value=t.date;txType.value=t.type;txCategory.value=t.category;txAmount.value=t.amount;txNote.value=t.note||'';txFormTitle.textContent='Edit transaksi';txSave.textContent='Simpan perubahan';txCancel.classList.remove('hidden')}
+function resetTx(){editing.tx=null;txForm.reset();txDate.value=today();txFormTitle.textContent='Tambah transaksi';txSave.textContent='Simpan transaksi';txCancel.classList.add('hidden')}
+txCancel.onclick=resetTx;
+function deleteTx(id){if(confirm('Hapus transaksi ini?')){data.transactions=data.transactions.filter(t=>t.id!==id);persist();toast('Transaksi dihapus')}}
+function renderBudgets(){budgetRows.innerHTML=Object.entries(data.budgets).map(([k,v])=>`<div class="item row"><div><b>${esc(k)}</b><br><small>Batas ${money(v)}</small></div><div class="actions"><button class="secondary small" onclick="editBudget('${esc(k)}')">Edit</button><button class="danger small" onclick="deleteBudget('${esc(k)}')">Hapus</button></div></div>`).join('')||'<p class="hint">Belum ada kategori anggaran.</p>'}
+function saveBudget(){
+ const name=document.getElementById('budgetName').value.trim();
+ const amt=Number(document.getElementById('budgetAmount').value);
+ if(!name){alert('Nama kategori wajib diisi.');return}
+ if(!Number.isFinite(amt)||amt<0){alert('Masukkan batas anggaran yang valid.');return}
+ const oldName=editing.budget;
+ if(oldName && oldName!==name) delete data.budgets[oldName];
+ data.budgets[name]=amt;
+ persist();
+ resetBudget();
+ toast('Perubahan anggaran berhasil disimpan');
+}
+function editBudget(k){
+ if(!Object.prototype.hasOwnProperty.call(data.budgets,k)) return;
+ editing.budget=k;
+ document.getElementById('budgetName').value=k;
+ document.getElementById('budgetAmount').value=Number(data.budgets[k]);
+ document.getElementById('budgetFormTitle').textContent='Edit kategori anggaran';
+ document.getElementById('budgetSave').textContent='Simpan perubahan';
+ document.getElementById('budgetCancel').classList.remove('hidden');
+ document.getElementById('budgetName').focus();
+}
+function resetBudget(){editing.budget=null;budgetForm.reset();budgetFormTitle.textContent='Tambah kategori anggaran';budgetSave.textContent='Simpan kategori';budgetCancel.classList.add('hidden')}
+budgetCancel.onclick=resetBudget;
+function deleteBudget(k){if(confirm('Hapus kategori '+k+'? Transaksi lama tetap tersimpan.')){delete data.budgets[k];persist()}}
+billRepeat.onchange=()=>{let interval=billRepeat.value==='interval';billDayWrap.classList.toggle('hidden',interval);billStartWrap.classList.toggle('hidden',!interval);billIntervalWrap.classList.toggle('hidden',!interval)};
+billForm.onsubmit=e=>{e.preventDefault();let b={id:editing.bill||uid(),name:billName.value.trim(),amount:+billAmount.value,repeat:billRepeat.value};if(b.repeat==='monthly')b.day=+billDay.value;else{b.startDate=billStart.value;b.intervalDays=+billInterval.value}if(editing.bill){data.bills[data.bills.findIndex(x=>x.id===editing.bill)]=b}else data.bills.push(b);resetBill();persist();toast('Tagihan disimpan')};
+function renderBills(){billRows.innerHTML=data.bills.map(b=>`<div class="item row"><div><b>${esc(b.name)}</b><br><small>${b.repeat==='interval'?'Setiap '+b.intervalDays+' hari mulai '+b.startDate:'Setiap bulan tanggal '+b.day} · berikutnya ${nextDue(b)}</small><br><small>${money(b.amount)}</small></div><div class="actions"><button class="secondary small" onclick="editBill('${b.id}')">Edit</button><button class="danger small" onclick="deleteBill('${b.id}')">Hapus</button></div></div>`).join('')||'<p class="hint">Belum ada tagihan.</p>'}
+function editBill(id){let b=data.bills.find(x=>x.id===id);if(!b)return;editing.bill=id;billName.value=b.name;billAmount.value=b.amount;billRepeat.value=b.repeat;billRepeat.onchange();if(b.repeat==='monthly')billDay.value=b.day;else{billStart.value=b.startDate;billInterval.value=b.intervalDays}billFormTitle.textContent='Edit tagihan';billSave.textContent='Simpan perubahan';billCancel.classList.remove('hidden')}
+function resetBill(){editing.bill=null;billForm.reset();billRepeat.value='monthly';billRepeat.onchange();billDay.value=13;billFormTitle.textContent='Tambah tagihan';billSave.textContent='Simpan tagihan';billCancel.classList.add('hidden')}
+billCancel.onclick=resetBill;
+function deleteBill(id){if(confirm('Hapus tagihan ini?')){data.bills=data.bills.filter(x=>x.id!==id);persist()}}
+goalForm.onsubmit=e=>{e.preventDefault();let g={id:editing.goal||uid(),name:goalName.value.trim(),target:+goalTarget.value,saved:+goalSaved.value,monthlyContribution:+goalMonthly.value||0,targetDate:goalDate.value||''};if(editing.goal){data.goals[data.goals.findIndex(x=>x.id===editing.goal)]=g}else data.goals.push(g);resetGoal();persist();toast('Target tabungan disimpan')};
+function renderGoals(){
+ let ds=Array.isArray(data.deposits)?data.deposits:[];
+ goalRows.innerHTML=data.goals.map(g=>{
+  let added=ds.filter(d=>d.goalId===g.id).reduce((n,d)=>n+(+d.amount||0),0), withdrawn=(data.withdrawals||[]).filter(w=>w.goalId===g.id).reduce((n,w)=>n+(+w.amount||0),0), total=(+g.saved||0)+added-withdrawn;
+  let p=g.target?Math.min(100,total/g.target*100):0, months=(+g.monthlyContribution||0)>0?Math.ceil(Math.max(0,g.target-total)/g.monthlyContribution):null;
+  return `<div class="item"><div class="row"><b>${esc(g.name)}</b><b>${money(total)} / ${money(g.target)}</b></div><div class="bar"><i style="width:${p}%"></i></div><div class="row"><small>${p.toFixed(1)}% tercapai · Saldo awal ${money(g.saved||0)} · Setoran ${money(added)} · Penarikan ${money(withdrawn)} · ${months===null?'Atur setoran untuk estimasi':months+' bulan lagi'}</small><div class="actions"><button class="secondary small" onclick="editGoal('${g.id}')">Edit</button><button class="danger small" onclick="deleteGoal('${g.id}')">Hapus</button></div></div></div>`;
+ }).join('')||'<p class="hint">Belum ada target tabungan.</p>';
+ const ym=month(),dsMonth=ds.filter(d=>(d.date||'').startsWith(ym)),wsMonth=(data.withdrawals||[]).filter(w=>(w.date||'').startsWith(ym));
+ monthlyGoalProgress.innerHTML=data.goals.map(g=>{let target=Math.max(0,+g.monthlyContribution||0),paid=dsMonth.filter(d=>d.goalId===g.id).reduce((a,d)=>a+(+d.amount||0),0),taken=wsMonth.filter(w=>w.goalId===g.id).reduce((a,w)=>a+(+w.amount||0),0),net=Math.max(0,paid-taken),pct=target?Math.min(100,net/target*100):0;return `<div class="item"><div class="row"><b>${esc(g.name)}</b><b>${money(net)} / ${money(target)}</b></div><div class="bar"><i style="width:${pct}%"></i></div><small>${target?pct.toFixed(1)+'% tercapai · Kurang '+money(Math.max(0,target-net)): 'Belum ada target setoran bulanan; atur melalui Edit target.'}</small></div>`}).join('')||'<p class="hint">Tambahkan target tabungan untuk melihat progres bulanan.</p>';
+ depositGoal.innerHTML=data.goals.map(g=>`<option value="${esc(g.id)}">${esc(g.name)}</option>`).join('');
+ renderDeposits();
+ renderWithdrawals();
+ renderManualAllocation();
+}
+function renderDeposits(){
+ let rows=(data.deposits||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ depositRows.innerHTML=rows.map(d=>{let g=data.goals.find(x=>x.id===d.goalId);return `<tr><td>${esc(d.date||'')}</td><td>${esc(g?.name||'Target dihapus')}</td><td>${esc(d.note||'—')}</td><td class="green">${money(d.amount)}</td><td><button class="secondary small" onclick="editDeposit('${d.id}')">Edit</button> <button class="danger small" onclick="deleteDeposit('${d.id}')">Hapus</button></td></tr>`}).join('')||'<tr><td colspan="5" class="hint">Belum ada setoran.</td></tr>';
+}
+let editingDeposit=null;
+depositDate.value=today();
+depositForm.onsubmit=e=>{e.preventDefault();let amount=Number(depositAmount.value);if(!data.goals.some(g=>g.id===depositGoal.value)){toast('Buat target tabungan terlebih dahulu.');return}if(!Number.isFinite(amount)||amount<=0){toast('Nominal harus lebih dari nol.');return}let d={id:editingDeposit||uid(),goalId:depositGoal.value,date:depositDate.value,amount,note:depositNote.value.trim()};if(!Array.isArray(data.deposits))data.deposits=[];if(editingDeposit){let i=data.deposits.findIndex(x=>x.id===editingDeposit);if(i>=0)data.deposits[i]=d}else data.deposits.push(d);resetDeposit();persist();toast('Setoran tabungan berhasil disimpan')};
+function editDeposit(id){let d=(data.deposits||[]).find(x=>x.id===id);if(!d)return;editingDeposit=id;depositGoal.value=d.goalId;depositDate.value=d.date||today();depositAmount.value=d.amount;depositNote.value=d.note||'';depositSave.textContent='Simpan perubahan';depositCancel.classList.remove('hidden');depositForm.scrollIntoView({behavior:'smooth',block:'center'})}
+function resetDeposit(){editingDeposit=null;depositForm.reset();depositDate.value=today();depositSave.textContent='Simpan setoran';depositCancel.classList.add('hidden')}
+depositCancel.onclick=resetDeposit;
+function deleteDeposit(id){let d=(data.deposits||[]).find(x=>x.id===id);if(d&&confirm('Hapus setoran '+money(d.amount)+'? Progres target akan berkurang.')){data.deposits=data.deposits.filter(x=>x.id!==id);persist();toast('Setoran dihapus')}}
+let editingWithdrawal=null;
+withdrawDate.value=today();
+function goalBalance(goalId){let g=data.goals.find(x=>x.id===goalId);if(!g)return 0;let plus=(data.deposits||[]).filter(x=>x.goalId===goalId).reduce((a,x)=>a+(+x.amount||0),0),minus=(data.withdrawals||[]).filter(x=>x.goalId===goalId&&x.id!==editingWithdrawal).reduce((a,x)=>a+(+x.amount||0),0);return (+g.saved||0)+plus-minus;}
+function renderWithdrawals(){
+ withdrawGoal.innerHTML=data.goals.map(g=>`<option value="${esc(g.id)}">${esc(g.name)} — ${money(goalBalance(g.id))}</option>`).join('');
+ let rows=(data.withdrawals||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ withdrawRows.innerHTML=rows.map(w=>{let g=data.goals.find(x=>x.id===w.goalId);return `<tr><td>${esc(w.date||'')}</td><td>${esc(g?.name||'Target dihapus')}</td><td>${esc(w.note||'—')}</td><td class="red">${money(w.amount)}</td><td><button class="secondary small" onclick="editWithdrawal('${w.id}')">Edit</button> <button class="danger small" onclick="deleteWithdrawal('${w.id}')">Hapus</button></td></tr>`}).join('')||'<tr><td colspan="5" class="hint">Belum ada penarikan.</td></tr>';
+}
+withdrawForm.onsubmit=e=>{e.preventDefault();let amount=Number(withdrawAmount.value),goalId=withdrawGoal.value;if(!Number.isFinite(amount)||amount<=0){toast('Nominal harus lebih dari nol.');return}if(amount>goalBalance(goalId)){toast('Saldo target tidak mencukupi.');return}let w={id:editingWithdrawal||uid(),goalId,date:withdrawDate.value,amount,note:withdrawNote.value.trim()};if(!Array.isArray(data.withdrawals))data.withdrawals=[];if(editingWithdrawal){let i=data.withdrawals.findIndex(x=>x.id===editingWithdrawal);if(i>=0)data.withdrawals[i]=w}else data.withdrawals.push(w);resetWithdrawal();persist();toast('Penarikan tabungan berhasil dicatat')};
+function editWithdrawal(id){let w=(data.withdrawals||[]).find(x=>x.id===id);if(!w)return;editingWithdrawal=id;withdrawGoal.value=w.goalId;withdrawDate.value=w.date||today();withdrawAmount.value=w.amount;withdrawNote.value=w.note||'';withdrawSave.textContent='Simpan perubahan';withdrawCancel.classList.remove('hidden');withdrawForm.scrollIntoView({behavior:'smooth',block:'center'})}
+function resetWithdrawal(){editingWithdrawal=null;withdrawForm.reset();withdrawDate.value=today();withdrawSave.textContent='Simpan penarikan';withdrawCancel.classList.add('hidden')}
+withdrawCancel.onclick=resetWithdrawal;
+function deleteWithdrawal(id){let w=(data.withdrawals||[]).find(x=>x.id===id);if(w&&confirm('Hapus riwayat penarikan '+money(w.amount)+'? Saldo target akan bertambah kembali.')){data.withdrawals=data.withdrawals.filter(x=>x.id!==id);persist();toast('Riwayat penarikan dihapus')}}
+function renderManualAllocation(){
+ manualAllocationRows.innerHTML=data.goals.map(g=>`<div class="formgrid item"><div><label>${esc(g.name)} · Saldo ${money(goalBalance(g.id))}</label><input type="number" min="0" step="1" data-manual-goal="${esc(g.id)}" value="0"></div></div>`).join('')||'<p class="hint">Buat target tabungan terlebih dahulu.</p>';
+ updateManualAllocation();
+}
+function updateManualAllocation(){let vals=[...manualAllocationRows.querySelectorAll('[data-manual-goal]')].map(x=>Math.max(0,+x.value||0)),sum=vals.reduce((a,b)=>a+b,0),pool=Math.max(0,+allocationPool.value||0);manualAllocationTotal.textContent='Total alokasi: '+money(sum);manualAllocationRemaining.textContent=(sum<=pool?'Belum dialokasikan: ':'Melebihi dana: ')+money(Math.abs(pool-sum));manualAllocationRemaining.className=sum<=pool?'green':'red';}
+manualAllocationRows.addEventListener('input',updateManualAllocation);allocationPool.addEventListener('input',updateManualAllocation);
+confirmManualAllocation.onclick=()=>{let rows=[...manualAllocationRows.querySelectorAll('[data-manual-goal]')],pool=Math.max(0,+allocationPool.value||0),sum=rows.reduce((a,x)=>a+Math.max(0,+x.value||0),0);if(!rows.length){toast('Buat target tabungan terlebih dahulu.');return}if(sum<=0||sum>pool){toast('Total alokasi harus lebih dari nol dan tidak boleh melebihi dana tersedia.');return}if(!confirm('Catat setoran manual sebesar '+money(sum)+' ke '+rows.filter(x=>+x.value>0).length+' tujuan?'))return;if(!Array.isArray(data.deposits))data.deposits=[];rows.forEach(x=>{let amount=Math.max(0,+x.value||0);if(amount>0)data.deposits.push({id:uid(),goalId:x.dataset.manualGoal,date:today(),amount,note:'Alokasi tabungan manual'})});allocationPool.value='0';renderManualAllocation();persist();toast('Alokasi setoran berhasil dicatat')};
+
+
+function editGoal(id){let g=data.goals.find(x=>x.id===id);if(!g)return;editing.goal=id;goalName.value=g.name;goalTarget.value=g.target;goalSaved.value=g.saved;goalMonthly.value=g.monthlyContribution||0;goalDate.value=g.targetDate||'';goalFormTitle.textContent='Edit target tabungan';goalSave.textContent='Simpan perubahan';goalCancel.classList.remove('hidden')}
+function resetGoal(){editing.goal=null;goalForm.reset();goalSaved.value=0;goalMonthly.value=0;goalDate.value='';goalFormTitle.textContent='Tambah target tabungan';goalSave.textContent='Simpan target';goalCancel.classList.add('hidden')}
+goalCancel.onclick=resetGoal;
+function deleteGoal(id){if(confirm('Hapus target ini beserta riwayat setorannya?')){data.goals=data.goals.filter(x=>x.id!==id);data.deposits=(data.deposits||[]).filter(d=>d.goalId!==id);data.withdrawals=(data.withdrawals||[]).filter(w=>w.goalId!==id);persist()}}
+function renderMonthlyGoalSettings(){
+ monthlyGoalSettings.innerHTML=(data.goals||[]).map(g=>`<div><label>${esc(g.name)} (Rp/bulan)</label><input type="number" min="0" step="1" data-monthly-goal="${esc(g.id)}" value="${+g.monthlyContribution||0}"></div>`).join('')||'<p class="hint">Tambahkan tujuan tabungan terlebih dahulu.</p>';
+}
+function fillSettings(){let s=data.settings;setIncome.value=s.income;setPayDay.value=s.payDay;setSavingDay.value=s.savingDay;setRent.value=s.rentTarget;setEmergency.value=s.emergencyTarget;setOpening.value=Math.max(0,cashBalance());setDaily.value=s.dailyLimit;renderMonthlyGoalSettings()}
+settingsForm.onsubmit=e=>{
+ e.preventDefault();
+ // Saldo yang dimasukkan pengguna adalah saldo kas aktual saat ini.
+ // Rebase openingBalance agar saldo estimasi cocok tanpa mengubah riwayat.
+ const desiredCash=Math.max(0,Number(setOpening.value)||0);
+ const netMovement=sumType(data.transactions,'Pemasukan')-sumType(data.transactions,'Pengeluaran')-totalDeposits()+totalWithdrawals();
+ const adjustedOpening=desiredCash-netMovement;
+ data.settings={...data.settings,income:+setIncome.value,payDay:+setPayDay.value,savingDay:+setSavingDay.value,rentTarget:+setRent.value,emergencyTarget:+setEmergency.value,openingBalance:adjustedOpening,dailyLimit:+setDaily.value};
+ [['rent','Dana sewa rumah tahunan',data.settings.rentTarget],['emergency','Dana darurat',data.settings.emergencyTarget]].forEach(([id,name,target])=>{let g=data.goals.find(x=>x.id===id);if(g)g.target=target;else data.goals.push({id,name,target,saved:0,monthlyContribution:0,targetDate:''});});
+ monthlyGoalSettings.querySelectorAll('[data-monthly-goal]').forEach(el=>{let g=data.goals.find(x=>x.id===el.dataset.monthlyGoal);if(g)g.monthlyContribution=Math.max(0,+el.value||0)});
+ persist();fillSettings();toast('Saldo estimasi dan pengaturan berhasil diperbarui')
+};
+function resetAllForms(){resetTx();resetBudget();resetBill();resetGoal()}
+
+// v7.0 feature layer: additive fields only; legacy transaction/budget/bill/goal data stays intact.
+let calendarCursor=new Date();calendarCursor.setDate(1);
+const monthLabel=ym=>{let [y,m]=ym.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('id-ID',{month:'long',year:'numeric'})};
+let allocationDraft=null;
+function allocationTotal(source=data.budgets){return Object.values(source).reduce((a,v)=>a+(+v||0),0)}
+function renderAllocation(){
+ let income=+data.settings.income||0,saving=(data.goals||[]).reduce((a,g)=>a+(+g.monthlyContribution||0),0),source=allocationDraft||data.budgets,total=allocationTotal(source),left=income-saving-total;
+ allocationSummary.innerHTML=[['Gaji bulanan',money(income)],['Target setoran bulanan',money(saving)],['Total anggaran hidup',money(total)],['Sisa belum dialokasikan',money(left)]].map(x=>`<div class="metric"><div class="kicker">${x[0]}</div><div class="value">${x[1]}</div></div>`).join('');
+ allocationRows.innerHTML=Object.entries(source).map(([k,v])=>`<tr><td>${esc(k)}</td><td><input type="number" min="0" data-allocation="${esc(k)}" value="${+v||0}" style="max-width:150px"></td><td>${income?(v/income*100).toFixed(1):'0.0'}%</td><td><span class="hint">${income?((v/income)*100).toFixed(0):0}% gaji</span></td></tr>`).join('');
+ allocationTotal.textContent='Total anggaran: '+money(total);allocationHint.textContent=(left>=0?'Sisa setelah target setoran dan anggaran: ':'Defisit alokasi: ')+money(Math.abs(left))+(left<0?' · Anggaran melebihi gaji dan target setoran.':'');
+}
+function readAllocationDraft(){let draft={...(allocationDraft||data.budgets)};allocationRows.querySelectorAll('[data-allocation]').forEach(el=>draft[el.dataset.allocation]=Math.max(0,+el.value||0));allocationDraft=draft;return draft}
+allocationRows.addEventListener('input',()=>{readAllocationDraft();renderAllocation()});
+smartRecommend.onclick=()=>{
+ let income=+data.settings.income||0,saving=(data.goals||[]).reduce((a,g)=>a+(+g.monthlyContribution||0),0),available=Math.max(0,income-saving),base=readAllocationDraft(),old=allocationTotal(base);
+ if(old<=0){toast('Belum ada kategori anggaran untuk dibagi.');return}
+ let scale=available/old;allocationDraft=Object.fromEntries(Object.keys(base).map(k=>[k,Math.round((+base[k]||0)*scale)]));
+ renderAllocation();toast('Simulasi rekomendasi siap ditinjau. Anggaran tetap belum berubah; tekan Simpan alokasi jika setuju.')
+};
+saveAllocation.onclick=()=>{
+ let draft=readAllocationDraft();Object.keys(data.budgets).forEach(k=>{if(!(k in draft))delete data.budgets[k]});
+ Object.entries(draft).forEach(([k,v])=>data.budgets[k]=Math.max(0,+v||0));
+ allocationDraft=null;persist();renderAllocation();toast('Anggaran tetap berhasil disimpan')
+};
+function renderAnalytics(){let ym=month(),tx=data.transactions.filter(t=>(t.date||'').startsWith(ym)&&t.type==='Pengeluaran'),by={};tx.forEach(t=>by[t.category]=(by[t.category]||0)+(+t.amount||0));let rows=Object.entries(by).sort((a,b)=>b[1]-a[1]),total=rows.reduce((a,x)=>a+x[1],0);expenseAnalysis.innerHTML=rows.length?rows.map(([k,v])=>`<div class="item"><div class="row"><b>${esc(k)}</b><b>${money(v)}</b></div><div class="mini-bar"><i style="width:${total?v/total*100:0}%"></i></div><small class="hint">${total?(v/total*100).toFixed(1):0}% dari pengeluaran</small></div>`).join(''):`<p class="hint">Belum ada pengeluaran tercatat pada bulan ini.</p>`;let over=Object.entries(data.budgets).map(([k,v])=>({k,v:+v||0,used:by[k]||0}));let exceeded=over.filter(x=>x.used>x.v);budgetHealth.innerHTML=`<div class="metric"><div class="kicker">Pengeluaran tercatat</div><div class="value">${money(total)}</div></div><p>${rows.length?'Kategori terbesar: <b>'+esc(rows[0][0])+'</b> ('+money(rows[0][1])+')':'Belum ada kategori terbesar.'}</p><p>${exceeded.length?'<span class="red">'+exceeded.length+' kategori melewati anggaran.</span>':'<span class="green">Belum ada kategori yang melewati anggaran.</span>'}</p>`;let months=[];let now=new Date();for(let i=5;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1),key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),list=data.transactions.filter(t=>(t.date||'').startsWith(key)),inc=sumType(list,'Pemasukan'),exp=sumType(list,'Pengeluaran');months.push({key,inc,exp,net:inc-exp})}monthlyTrend.innerHTML=months.map(x=>`<div class="item"><div class="row"><b>${monthLabel(x.key)}</b><b class="${x.net>=0?'green':'red'}">${money(x.net)}</b></div><div class="row hint"><span>Masuk ${money(x.inc)}</span><span>Keluar ${money(x.exp)}</span></div><div class="mini-bar"><i style="width:${Math.min(100,x.inc?x.exp/x.inc*100:x.exp?100:0)}%;background:${x.exp>x.inc?'var(--red)':'var(--green)'}"></i></div></div>`).join('')}
+function calendarEvents(ym){let out={};const add=(date,label)=>{if(!date)return;(out[date]??=[]).push(label)};let [y,m]=ym.split('-').map(Number),days=new Date(y,m,0).getDate();for(let d=1;d<=days;d++){let key=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(d===Math.min(+data.settings.payDay||1,days))add(key,'Gajian');if(d===Math.min(+data.settings.savingDay||1,days))add(key,'Menabung')};data.bills.forEach(b=>{for(let d=1;d<=days;d++){let key=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(dueDate(b,ym)===key)add(key,'Tagihan: '+b.name)}});data.transactions.filter(t=>(t.date||'').startsWith(ym)).forEach(t=>add(t.date,(t.type==='Pemasukan'?'+ ':'− ')+t.category));return out}
+function renderCalendar(){let ym=calendarCursor.getFullYear()+'-'+String(calendarCursor.getMonth()+1).padStart(2,'0'),events=calendarEvents(ym),first=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth(),1).getDay(),days=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+1,0).getDate();calendarTitle.textContent=monthLabel(ym);let html=['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(x=>`<div class="cal-head">${x}</div>`).join('');for(let i=0;i<first;i++)html+='<div class="cal-cell muted"></div>';for(let d=1;d<=days;d++){let key=`${ym}-${String(d).padStart(2,'0')}`,ev=events[key]||[];html+=`<div class="cal-cell ${key===today()?'today':''}"><b>${d}</b>${ev.slice(0,3).map(x=>`<div class="cal-event" title="${esc(x)}">${esc(x)}</div>`).join('')}${ev.length>3?`<small>+${ev.length-3}</small>`:''}</div>`}calendarGrid.innerHTML=html;let agenda=Object.entries(events).sort((a,b)=>a[0].localeCompare(b[0]));calendarAgenda.innerHTML=agenda.length?agenda.map(([d,ev])=>`<div class="item row"><b>${d}</b><span class="hint">${ev.map(esc).join(' · ')}</span></div>`).join(''):'<p class="hint">Tidak ada agenda pada bulan ini.</p>'}
+calPrev.onclick=()=>{calendarCursor.setMonth(calendarCursor.getMonth()-1);renderCalendar()};calNext.onclick=()=>{calendarCursor.setMonth(calendarCursor.getMonth()+1);renderCalendar()};
+function reportData(ym){let list=data.transactions.filter(t=>(t.date||'').startsWith(ym)),inc=sumType(list,'Pemasukan'),exp=sumType(list,'Pengeluaran'),by={};list.filter(t=>t.type==='Pengeluaran').forEach(t=>by[t.category]=(by[t.category]||0)+(+t.amount||0));return {list,inc,exp,by}}
+function renderReport(){let ym=reportMonth.value||month(),r=reportData(ym);reportContent.innerHTML=`<div class="report-head"><h2>SEVALDI FINANCE — Laporan ${monthLabel(ym)}</h2><div class="hint">Dibuat pada ${today()} · Mata uang Rupiah (IDR)</div></div><div class="grid"><div class="metric"><div class="kicker">Pemasukan</div><div class="value green">${money(r.inc)}</div></div><div class="metric"><div class="kicker">Pengeluaran</div><div class="value red">${money(r.exp)}</div></div><div class="metric"><div class="kicker">Selisih</div><div class="value">${money(r.inc-r.exp)}</div></div></div><h3 class="section">Pengeluaran per kategori</h3><div class="tablewrap"><table><thead><tr><th>Kategori</th><th>Nominal</th></tr></thead><tbody>${Object.entries(r.by).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${money(v)}</td></tr>`).join('')||'<tr><td colspan="2">Belum ada data.</td></tr>'}</tbody></table></div><h3 class="section">Rincian transaksi</h3><div class="tablewrap"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Catatan</th><th>Nominal</th></tr></thead><tbody>${r.list.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.type)}</td><td>${esc(t.category)}</td><td>${esc(t.note||'')}</td><td>${money(t.amount)}</td></tr>`).join('')||'<tr><td colspan="5">Belum ada transaksi.</td></tr>'}</tbody></table></div><p class="hint section">Catatan: laporan berdasarkan transaksi yang dicatat, bukan rekening bank otomatis.</p>`}
+reportMonth.value=month();reportMonth.onchange=renderReport;pdfExport.onclick=()=>{renderReport();window.print()};excelExport.onclick=()=>{if(!window.XLSX){toast('Library Excel belum termuat. Periksa koneksi internet.');return}let ym=reportMonth.value||month(),r=reportData(ym),wb=XLSX.utils.book_new();let tx=r.list.map(t=>({Tanggal:t.date,Jenis:t.type,Kategori:t.category,Catatan:t.note||'',Nominal:+t.amount||0}));XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(tx),'Transaksi');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(Object.entries(data.budgets).map(([Kategori,Anggaran])=>({Kategori,Anggaran}))), 'Anggaran');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.goals.map(g=>({Target:g.name,Target_Rp:g.target,Terkumpul_Rp:g.saved,Setoran_Bulanan_Rp:g.monthlyContribution||0,Tanggal_Target:g.targetDate||''}))), 'Tabungan');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet((data.deposits||[]).map(d=>({Tanggal:d.date,Target:data.goals.find(g=>g.id===d.goalId)?.name||'Target dihapus',Nominal_Rp:+d.amount||0,Catatan:d.note||''}))), 'Riwayat Setoran');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet((data.withdrawals||[]).map(w=>({Tanggal:w.date,Target:data.goals.find(g=>g.id===w.goalId)?.name||'Target dihapus',Nominal_Rp:+w.amount||0,Catatan:w.note||''}))), 'Riwayat Penarikan');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.bills.map(b=>({Tagihan:b.name,Nominal_Rp:b.amount,Pola:b.repeat,Jatuh_Tempo:b.repeat==='monthly'?'Tanggal '+b.day:'Setiap '+b.intervalDays+' hari'}))), 'Tagihan');XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet([{Periode:ym,Pemasukan_Rp:r.inc,Pengeluaran_Rp:r.exp,Selisih_Rp:r.inc-r.exp}]),'Ringkasan');XLSX.writeFile(wb,'SEVALDI_FINANCE_Laporan_'+ym+'.xlsx')};
+
+exportBtn.onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sevaldi-finance-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)};
+importFile.onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.settings||!d.budgets||!d.bills||!d.goals||!d.transactions)throw Error('Format tidak cocok');if(confirm('Impor akan mengganti data dashboard saat ini. Lanjutkan?')){data={...d,settings:{...defaultData.settings,...(d.settings||{})},goals:(d.goals||[]).map(g=>({...g,monthlyContribution:+g.monthlyContribution||0,targetDate:g.targetDate||''})),deposits:Array.isArray(d.deposits)?d.deposits:[]};persist();resetAllForms();toast('Backup berhasil diimpor')}}catch(err){alert('File backup tidak valid untuk SEVALDI FINANCE v9.2')}e.target.value=''};
+/* Supabase cloud sync with Google OAuth. Public anon/publishable key only. */
+const sbLib = window.supabase;
+let sb = null, cloudUser = null, cloudBusy = false;
+let authListenerReady=false;
+function initCloudClient(){
+ sb = (sbLib && cloud.url && cloud.key) ? sbLib.createClient(cloud.url,cloud.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'pkce'}}) : null;
+ if(!sb || authListenerReady)return;
+ authListenerReady=true;
+ sb.auth.onAuthStateChange((event,session)=>{
+  cloudUser=session?.user||null;
+  if(session){
+   cloudStatus.textContent='Login Google aktif: '+(session.user.email||'akun Google')+'. Memeriksa data cloud...';
+   if(event==='SIGNED_IN')setTimeout(()=>cloudSync(true).catch(e=>cloudStatus.textContent='Cloud: '+e.message),0);
+  }else if(event==='SIGNED_OUT')cloudStatus.textContent='Belum login ke cloud.';
+ });
+ sb.auth.getSession().then(({data:{session}})=>{
+  if(session){cloudUser=session.user;cloudStatus.textContent='Sesi Google aktif: '+(session.user.email||'');}
+ });
+}
+function saveCloudConfig(){
+ cloud.url=cloudUrl.value.trim().replace(/\/$/,'');
+ cloud.key=cloudKey.value.trim();
+ localStorage.setItem(CLOUD,JSON.stringify({url:cloud.url,key:cloud.key}));
+ initCloudClient();
+}
+function loadCloudConfig(){
+ try{
+  let c=JSON.parse(localStorage.getItem(CLOUD)||'{}');
+  cloud={...cloud,...c}; cloudUrl.value=cloud.url||'';cloudKey.value=cloud.key||'';
+  if(cloud.url&&cloud.key){saveCloudConfig(); cloudStatus.textContent='Konfigurasi tersedia. Login dengan Google untuk mengaktifkan sinkronisasi.';}
+ }catch(e){cloudStatus.textContent='Konfigurasi cloud belum tersedia.'}
+}
+cloudSave.onclick=()=>{
+ try{saveCloudConfig();if(!sb)throw Error('Periksa Project URL dan public key.');cloudStatus.textContent='Konfigurasi tersimpan pada browser ini.';toast('Konfigurasi cloud tersimpan')}
+ catch(e){cloudStatus.textContent=e.message;toast(e.message)}
+};
+cloudLogin.onclick=async()=>{
+ try{
+  if(!cloud.url||!cloud.key)saveCloudConfig();
+  if(!sb)throw Error('Isi URL dan anon/public key Supabase terlebih dahulu.');
+  const {error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});
+  if(error)throw error;
+ }catch(e){cloudStatus.textContent='Login Google gagal: '+e.message;toast(e.message)}
+};
+async function cloudFetch(path,opts={}){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)throw Error('Sesi Google tidak ditemukan. Login kembali.');
+ const r=await fetch(cloud.url+'/rest/v1/'+path,{...opts,headers:{'Content-Type':'application/json','apikey':cloud.key,'Authorization':'Bearer '+session.access_token,'Prefer':'resolution=merge-duplicates,return=representation',...(opts.headers||{})}});
+ const tx=await r.text();if(!r.ok)throw Error(tx||'Permintaan cloud gagal');return tx?JSON.parse(tx):null;
+}
+async function cloudSync(pull=false){
+ if(!sb)throw Error('Konfigurasi Supabase belum diisi.');
+ if(cloudBusy)return;cloudBusy=true;cloudStatus.textContent='Menyinkronkan data...';
+ try{
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){cloudStatus.textContent='Login dengan Google terlebih dahulu.';return}
+  cloudUser=session.user;
+  const rows=await cloudFetch('user_finance?user_id=eq.'+encodeURIComponent(cloudUser.id)+'&select=data,updated_at');
+  if(rows&&rows.length){
+   if(pull){
+    if(confirm('Data cloud ditemukan. Muat data cloud ke perangkat ini? Data lokal saat ini akan diganti.')){
+     data=rows[0].data;localStorage.setItem(KEY,JSON.stringify(data));render();
+     cloudStatus.textContent='Data cloud berhasil dimuat · '+new Date().toLocaleString('id-ID');return;
+    } else {
+     cloudStatus.textContent='Pemulihan dibatalkan. Data cloud tidak ditimpa.';return;
+    }
+   }
+   await cloudFetch('user_finance?user_id=eq.'+encodeURIComponent(cloudUser.id),{method:'PATCH',body:JSON.stringify({data,updated_at:new Date().toISOString()})});
+  }else{
+   await cloudFetch('user_finance',{method:'POST',body:JSON.stringify({user_id:cloudUser.id,data,updated_at:new Date().toISOString()})});
+  }
+  cloudStatus.textContent='Tersinkron ke cloud sebagai '+(cloudUser.email||'akun Google')+' · '+new Date().toLocaleString('id-ID');
+ }catch(e){cloudStatus.textContent='Sinkronisasi gagal: '+e.message;throw e}
+ finally{cloudBusy=false}
+}
+let cloudTimer;
+function scheduleCloudSave(){
+ if(!sb)return;
+ clearTimeout(cloudTimer);
+ cloudTimer=setTimeout(()=>cloudSync(false).catch(()=>{}),1200);
+}
+cloudSyncNow.onclick=()=>cloudSync(false).then(()=>toast('Sinkronisasi selesai')).catch(e=>toast(e.message));
+cloudLogout.onclick=async()=>{
+ if(sb)await sb.auth.signOut();
+ cloudUser=null;cloudStatus.textContent='Logout berhasil. Data lokal tetap tersimpan.';
+};
+if(sbLib){
+ // Load saved cloud settings and initialize Google authentication on this device.
+ loadCloudConfig();
+ if(cloud.url&&cloud.key)initCloudClient();
+}
+render();
+</script>
+</body></html>
